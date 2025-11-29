@@ -260,16 +260,24 @@
                 <td>Tết, lễ lớn</td>
             </tr>
         </table>
-        <!-- 🎉 Ảnh sự kiện -->
-        {% if hotel.event_image_url %}
-        <h4 class="text-primary mt-4">Sự kiện đặc biệt</h4>
-        <img src="{{ hotel.event_image_url }}" alt="Ảnh event" style="width:100%; max-height:600px; object-fit:cover; border-radius:10px;">
-        {% endif %}
-        <!-- 📝 Mô tả sự kiện -->
-        {% if hotel.event_description %}
-        <p class="mt-3" style="font-size: 1.1rem; line-height: 1.6;">
-            {{ hotel.event_description }}
-        </p>
+        <!-- 🎉 Sự kiện đặc biệt -->
+        {% if hotel.event_image_url or hotel.event_description %}
+        <div class="mt-4" style="border-radius:10px; overflow:hidden; background:#fff7e6;">
+
+            {% if hotel.event_image_url %}
+            <img src="{{ hotel.event_image_url }}"
+                 alt="Ảnh event"
+                 style="width:100%; max-height:600px; object-fit:cover;">
+            {% endif %}
+
+            {% if hotel.event_description %}
+            <div style="padding:15px; font-size:16px;">
+                <h4 class="text-primary mb-2">Sự kiện đặc biệt</h4>
+                <p>{{ hotel.event_description }}</p>
+            </div>
+            {% endif %}
+
+        </div>
         {% endif %}
         <!-- 🏠 Danh sách phòng -->
         <h3 class="mb-3">Các loại phòng</h3>
@@ -404,6 +412,7 @@
     </script>
 </body>
 </html>
+
 
 
 
