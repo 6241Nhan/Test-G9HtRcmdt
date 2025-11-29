@@ -260,7 +260,11 @@
                 <td>Tết, lễ lớn</td>
             </tr>
         </table>
-
+        <!-- 🎉 Ảnh sự kiện -->
+        {% if hotel.event_image_url %}
+        <h4 class="text-primary mt-4">Sự kiện đặc biệt</h4>
+        <img src="{{ hotel.event_image_url }}" alt="Ảnh event" style="width:100%; max-height:600px; object-fit:cover; border-radius:10px;">
+        {% endif %}
         <!-- 🏠 Danh sách phòng -->
         <h3 class="mb-3">Các loại phòng</h3>
         <div class="row">
@@ -394,3 +398,4 @@
     </script>
 </body>
 </html>
+
