@@ -560,7 +560,7 @@ def hotel_detail(name):
 
     # === THÊM EVENT IMAGE ===
     hotel['event_image_url'] = hotel_data.iloc[0].get('event_image_url', '')
-    if pd.psna(hotel['event_image_url']):
+    if pd.isna(hotel['event_image_url']):
         hotel['event_image_url'] = ''
 
     return render_template(
@@ -956,6 +956,7 @@ def update_hotel_status(name, status):
 # === KHỞI CHẠY APP ===
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
