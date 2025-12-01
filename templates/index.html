@@ -192,16 +192,27 @@
                     <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about">Giới thiệu</a></li>
                     <li class="nav-item"><a class="nav-link" href="#search">Tìm kiếm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ai_chat">🤖 AI Chat</a></li>
                     <li class="nav-item"><a class="nav-link" href="/history">📘 Lịch sử đặt phòng</a></li>
                     <li class="nav-item"><a class="nav-link" href="/admin/login">🔑 Admin</a></li>
                     <li class="nav-item"><a class="nav-link" href="tel:+84987654321">📞 0987 654 321</a></li>
 
                     {% if not session.get('user') %}
-                    <li class="nav-item"><a class="nav-link btn btn-outline-light ms-2" href="/login">Đăng nhập</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-light text-dark ms-2" href="/register">Đăng ký</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-2" href="/login">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-light text-dark ms-2" href="/register">Đăng ký</a>
+                    </li>
                     {% else %}
-                    <li class="nav-item"><span class="nav-link">Xin chào, {{ session.user.username }}</span></li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-danger ms-2" href="/logout">Đăng xuất</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile') }}">
+                            👤 Xin chào, {{ session['user']['username'] }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-danger ms-2" href="/logout">Đăng xuất</a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -252,6 +263,29 @@
         </form>
     </div>
 
+    <!-- Tra cứu mã đặt phòng -->
+    <div class="lookup my-5 container">
+        <h2>🔎 Tra cứu mã đặt phòng</h2>
+        <p>Nhập mã đặt phòng của bạn để kiểm tra thông tin</p>
+
+        <form action="/check_booking" method="POST" class="d-flex gap-2 flex-wrap">
+            <input type="text" name="code" class="form-control" placeholder="Nhập mã đặt phòng" required>
+            <button type="submit" class="btn btn-primary">Tra cứu</button>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="mt-3">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category=='success' else 'danger' }} d-inline-block">
+                {{ message | safe }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
     <!-- ===================== BẮT ĐẦU: MỞ RỘNG HERO - INTRO + DESTINATIONS ===================== -->
     <!-- Giới thiệu ngắn -->
     <section class="container text-center mt-5 mb-4" id="site-intro" style="max-width:1000px; z-index:1; position:relative;">
@@ -286,7 +320,7 @@
             <div class="col-6 col-md-3">
                 <a href="/destinations/Da%20Nang" class="text-decoration-none">
                     <div class="card border-0 shadow-sm">
-                        <img src="https://statics.vinpearl.com/da-nang_1681788661.jpg" class="card-img-top" alt="Da Nang">
+                        <img src="/static/images/destinations/cities/danang.png" class="card-img-top" alt="Da Nang">
                         <div class="card-body text-center">
                             <strong class="text-dark">Đà Nẵng</strong>
                             <p class="small text-muted mb-0">Khách sạn ven biển & view đẹp</p>
@@ -299,7 +333,7 @@
             <div class="col-6 col-md-3">
                 <a href="/destinations/Ho%20Chi%20Minh" class="text-decoration-none">
                     <div class="card border-0 shadow-sm">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Ho_Chi_Minh_City.jpg" class="card-img-top" alt="Ho Chi Minh">
+                        <img src="/static/images/destinations/cities/hcm.png" class="card-img-top" alt="Ho Chi Minh">
                         <div class="card-body text-center">
                             <strong class="text-dark">Hồ Chí Minh</strong>
                             <p class="small text-muted mb-0">Khách sạn trung tâm, tiện giao thông</p>
@@ -312,7 +346,7 @@
             <div class="col-6 col-md-3">
                 <a href="/destinations/Ha%20Noi" class="text-decoration-none">
                     <div class="card border-0 shadow-sm">
-                        <img src="https://ik.imagekit.io/tvlk/blog/2023/01/du-lich-ha-noi-12.jpg" class="card-img-top" alt="Ha Noi">
+                        <img src="/static/images/destinations/cities/hanoi.png" class="card-img-top" alt="Ha Noi">
                         <div class="card-body text-center">
                             <strong class="text-dark">Hà Nội</strong>
                             <p class="small text-muted mb-0">Khách sạn cổ điển & ấm cúng</p>
@@ -325,7 +359,7 @@
             <div class="col-6 col-md-3">
                 <a href="/destinations/Nha%20Trang" class="text-decoration-none">
                     <div class="card border-0 shadow-sm">
-                        <img src="https://statics.vinpearl.com/nha-trang-7-ngay_1681996551.jpg" class="card-img-top" alt="Nha Trang">
+                        <img src="/static/images/destinations/cities/nhatrang.png" class="card-img-top" alt="Nha Trang">
                         <div class="card-body text-center">
                             <strong class="text-dark">Nha Trang</strong>
                             <p class="small text-muted mb-0">Resort & bãi tắm đẹp</p>
@@ -360,11 +394,11 @@
     <!-- JS: xử lý tìm kiếm nhanh -->
     <script>
         document.getElementById('quickSearchInput')?.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const q = encodeURIComponent(this.value.trim());
-                if (q) window.location.href = '/destinations/' + q;
-            }
+        if (e.key === 'Enter') {
+        e.preventDefault();
+        const q = encodeURIComponent(this.value.trim());
+        if (q) window.location.href = '/destinations/' + q;
+        }
         });
     </script>
     <!-- ===================== KẾT THÚC: MỞ RỘNG HERO - INTRO + DESTINATIONS ===================== -->
