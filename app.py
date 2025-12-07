@@ -206,17 +206,16 @@ def book(hotel_name, price):
         # ✅ Ghi lại users.csv
         df = pd.concat([df, pd.DataFrame([info])], ignore_index=True)
         df.to_csv(BOOKINGS_CSV, index=False, encoding='utf-8-sig')
+        # --- decrement rooms_available in hotels.csv atomically ---
+        try:
+            new_rooms = decrement_room_availability(HOTELS_CSV, name, decrement=1)
+            app.logger.info(f"Decremented rooms_available for '{name}' -> now {new_rooms}")
+        except Exception as e:
+            # Log but continue booking flow (so bookings are not blocked by availability write errors)
+            app.logger.warning(f"Failed to decrement rooms_available for '{name}': {e}")
 
-# --- decrement rooms_available in hotels.csv atomically ---
-try:
-    new_rooms = decrement_room_availability(HOTELS_CSV, name, decrement=1)
-    app.logger.info(f"Decremented rooms_available for '{name}' -> now {new_rooms}")
-except Exception as e:
-    # Log but continue booking flow (so bookings are not blocked by availability write errors)
-    app.logger.warning(f"Failed to decrement rooms_available for '{name}': {e}")
-
-    flash(f"Đặt phòng {hotel_name} thành công! Giá: {price:,} VND", "success")
-    return redirect(url_for("index"))
+            flash(f"Đặt phòng {hotel_name} thành công! Giá: {price:,} VND", "success")
+            return redirect(url_for("index"))
 
 # ========================================
 
@@ -985,6 +984,7 @@ def update_hotel_status(name, status):
 # === KHỞI CHẠY APP ===
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
